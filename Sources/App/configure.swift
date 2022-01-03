@@ -1,6 +1,11 @@
 import Fluent
 import FluentPostgresDriver
 import Vapor
+import Foundation
+import CryptoKit
+import AsyncHTTPClient
+
+//configure JSON Decoder
 
 // configures your application
 public func configure(_ app: Application) throws {
@@ -14,9 +19,16 @@ public func configure(_ app: Application) throws {
         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
         database: Environment.get("DATABASE_NAME") ?? "vapor_database"
     ), as: .psql)
+    
+    let appJsonDecoder = JSONDecoder()
+    appJsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+    appJsonDecoder.dateDecodingStrategy = .iso8601
+    ContentConfiguration.global.use(decoder: appJsonDecoder, for: .json)
 
     app.migrations.add(CreateTodo())
+    let amadeusAPI = AmadeusApi(for: app.client)
+    AmadeusApi.shared = amadeusAPI
+    try amadeusAPI.requestToken()
 
-    // register routes
     try routes(app)
 }
