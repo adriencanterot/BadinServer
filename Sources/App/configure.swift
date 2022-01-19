@@ -2,7 +2,6 @@ import Fluent
 import FluentPostgresDriver
 import Vapor
 import Foundation
-import CryptoKit
 import AsyncHTTPClient
 
 //configure JSON Decoder
