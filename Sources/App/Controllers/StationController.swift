@@ -18,7 +18,7 @@ struct StationController: RouteCollection {
         station.get("nearest", use: nearest)
 	}
     
-    func nearest(req: Request) async throws -> String {
+    func nearest(req: Request) async throws -> [Station]{
         let location = try req.query.decode(LocationQueryString.self)
         
         let url = URI(scheme: .https, host: "avwx.rest", path: "api/station/near/\(location.pair)")
@@ -29,8 +29,9 @@ struct StationController: RouteCollection {
             req.headers.bearerAuthorization = auth
         }
         
-        print(response)
-        return "a string"
+        let data = try response.content.decode([AVWXApi.LocationResponse].self)
+        let stations = data.map(Station.init)
+        return stations
         
     }
     

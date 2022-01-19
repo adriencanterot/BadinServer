@@ -21,7 +21,7 @@ struct METAR: Content {
     var windSpeed: WindSpeed?
         
     struct WindDirection: Content {
-        var value: String
+        var value: Int?
     }
         
     struct WindGust: Content {

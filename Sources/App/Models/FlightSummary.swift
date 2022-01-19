@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct FlightSummary {
+    var metar: METAR
+    var station: Station
+    
+}

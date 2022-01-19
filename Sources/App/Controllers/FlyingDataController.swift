@@ -13,13 +13,15 @@ struct FlyingDataController: RouteCollection {
     
     func boot(routes: RoutesBuilder) throws {
         let flyingDataRoutes = routes.grouped("flyingData")
-        flyingDataRoutes.get(":code", use: metar)
+        flyingDataRoutes.get("metar", ":code", use: metar)
+        
         
     }
     
     func metar(req: Request) async throws -> METAR {
-        guard let airportCode = try? req.parameters.get("code") else { throw Abort(.badRequest)
+        guard let airportCode = req.parameters.get("code") else { throw Abort(.badRequest)
         }
+        
         
         let metarCallURI = URI(scheme: .https, host: "avwx.rest", path: "api/metar/\(airportCode)")
         
@@ -32,4 +34,5 @@ struct FlyingDataController: RouteCollection {
         let data = try response.content.decode(METAR.self)
         return data
     }
+    
 }
