@@ -25,8 +25,6 @@ public func configure(_ app: Application) throws {
     ContentConfiguration.global.use(decoder: appJsonDecoder, for: .json)
 
     app.migrations.add(CreateTodo())
-    let amadeusAPI = AmadeusApi(for: app.client)
-    AmadeusApi.shared = amadeusAPI
 
     try routes(app)
 }
