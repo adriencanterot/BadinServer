@@ -28,7 +28,6 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateTodo())
     let amadeusAPI = AmadeusApi(for: app.client)
     AmadeusApi.shared = amadeusAPI
-    try amadeusAPI.requestToken()
 
     try routes(app)
 }
